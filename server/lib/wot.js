@@ -38,7 +38,7 @@ var getClanInfos = function (clanId) {
 
 var getPlayerPersonalData = function (ids) {
     return wot.get('account/info', { account_id: ids.toString(), language: WOTLanguage,
-        extra:"statistics.random,statistics.ranked_battles,statistics.ranked_battles_current,statistics.epic",
+        extra:"statistics.random,statistics.ranked_battles,statistics.ranked_battles_current,statistics.ranked_battles_previous,statistics.epic",
         fields:"-statistics.clan,-statistics.historical" })
         .then((response) => {
             return response.data;
@@ -68,9 +68,23 @@ function importData() {
             return getPlayerPersonalData(info.members.map((e) => e.account_id));
         })
         .then((stats)=>{
+            rclient.sadd("dates",getCurrentDateWithoutTime(currentDate).toISOString());
+            let first=true;
+
             for (let stat in stats) {
                 rclient.hmset("member:" + stats[stat].account_id, "data:" + getCurrentDateWithoutTime(currentDate).toISOString(), JSON.stringify(stats[stat]));
+
+                if (first===true){
+                    if (stats[stat].statistics){
+                        for (let s in stats[stat].statistics){
+                            if (stats[stat].statistics[s])
+                                rclient.sadd("stats",s);
+                        }
+                    }
+                    first=false;
+                }
             }
+
             return;
         })
         .then(getTanksData)

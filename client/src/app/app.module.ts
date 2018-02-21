@@ -11,6 +11,8 @@ import { DataService } from './services/data.service';
 import { MaterialModule } from './modules/material.module';
 import { MessageService } from './services/message.service';
 
+import {TreeCutModule} from './features/tree-cut/tree-cut.module';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -20,7 +22,8 @@ import { MessageService } from './services/message.service';
     BrowserAnimationsModule,
     AppRoutingModule,
     MaterialModule,
-    HttpClientModule
+    HttpClientModule,
+    TreeCutModule
   ],
   providers: [DataService, MessageService],
   bootstrap: [AppComponent]
