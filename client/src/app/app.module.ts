@@ -12,6 +12,7 @@ import { MaterialModule } from './modules/material.module';
 import { MessageService } from './services/message.service';
 
 import {TreeCutModule} from './features/tree-cut/tree-cut.module';
+import {SkirmishModule} from './features/skirmish/skirmish.module';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import {TreeCutModule} from './features/tree-cut/tree-cut.module';
     AppRoutingModule,
     MaterialModule,
     HttpClientModule,
-    TreeCutModule
+    TreeCutModule,
+    SkirmishModule
   ],
   providers: [DataService, MessageService],
   bootstrap: [AppComponent]

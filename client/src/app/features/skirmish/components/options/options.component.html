@@ -1,0 +1,17 @@
+<div style="padding-top:10px;padding-left:10px">
+  <mat-form-field>
+    <mat-select placeholder="Baseline Date" [(value)]="selectedBaseline" (selectionChange)="datesChanged()">
+        <mat-option [value]="null">None</mat-option>
+      <mat-option *ngFor="let d of dates" [value]="d">
+        {{ d | date }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select placeholder="Date" [(value)]="selectedDate" (selectionChange)="datesChanged()">
+      <mat-option *ngFor="let d of dates" [value]="d">
+        {{ d | date }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

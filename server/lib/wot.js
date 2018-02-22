@@ -37,9 +37,11 @@ var getClanInfos = function (clanId) {
 
 
 var getPlayerPersonalData = function (ids) {
-    return wot.get('account/info', { account_id: ids.toString(), language: WOTLanguage,
-        extra:"statistics.random,statistics.ranked_battles,statistics.ranked_battles_current,statistics.ranked_battles_previous,statistics.epic",
-        fields:"-statistics.clan,-statistics.historical" })
+    return wot.get('account/info', {
+        account_id: ids.toString(), language: WOTLanguage,
+        extra: "statistics.random,statistics.ranked_battles,statistics.ranked_battles_current,statistics.ranked_battles_previous,statistics.epic",
+        fields: "-statistics.clan,-statistics.historical"
+    })
         .then((response) => {
             return response.data;
         });
@@ -52,55 +54,65 @@ var getTanksData = function () {
         });
 }
 
+var getPlayerTanksData = function (id) {
+    return wot.get('tanks/stats', {
+        account_id: id, language: WOTLanguage,
+        extra: "random,epic,ranked",
+        fields: "-clan,-company"
+    })
+        .then((response) => {
+            return response.data;
+        });
+}
 
 function importData() {
 
     var currentDate = new Date();
     rclient.set("execution_time", currentDate);
-    return new Promise(function(resolve,reject){
+    return new Promise(function (resolve, reject) {
         getClanId()
-        .then(getClanInfos)
-        .then((info) => {
-            rclient.set("clan",JSON.stringify(info));
-            return info;
-        })
-        .then((info) => {
-            return getPlayerPersonalData(info.members.map((e) => e.account_id));
-        })
-        .then((stats)=>{
-            rclient.sadd("dates",getCurrentDateWithoutTime(currentDate).toISOString());
-            let first=true;
+            .then(getClanInfos)
+            .then((info) => {
+                rclient.set("clan", JSON.stringify(info));
+                return info;
+            })
+            .then((info) => {
+                return getPlayerPersonalData(info.members.map((e) => e.account_id));
+            })
+            .then((stats) => {
+                rclient.sadd("dates", getCurrentDateWithoutTime(currentDate).toISOString());
+                let first = true;
 
-            for (let stat in stats) {
-                rclient.hmset("member:" + stats[stat].account_id, "data:" + getCurrentDateWithoutTime(currentDate).toISOString(), JSON.stringify(stats[stat]));
+                for (let stat in stats) {
+                    rclient.hmset("member:" + stats[stat].account_id, "data:" + getCurrentDateWithoutTime(currentDate).toISOString(), JSON.stringify(stats[stat]));
 
-                if (first===true){
-                    if (stats[stat].statistics){
-                        for (let s in stats[stat].statistics){
-                            if (stats[stat].statistics[s])
-                                rclient.sadd("stats",s);
+                    if (first === true) {
+                        if (stats[stat].statistics) {
+                            for (let s in stats[stat].statistics) {
+                                if (stats[stat].statistics[s])
+                                    rclient.sadd("stats", s);
+                            }
                         }
+                        first = false;
                     }
-                    first=false;
                 }
-            }
 
-            return;
-        })
-        .then(getTanksData)
-        .then((tanks)=>{
-            rclient.set("tanks", JSON.stringify(Object.entries(tanks).map(([,v]) => v)));
-            return;
-        })
-        .then(()=>{
-            let end = new Date() - currentDate;
-            console.log("Execution time: %dms", end);
-            resolve({updateDate:currentDate,duration:end});
-        })
-        .catch((error)=>{
-            console.log(error);
-            reject(error);
-        })
+                return;
+            })
+            .then(getTanksData)
+            .then((tanks) => {
+                rclient.set("tanks", JSON.stringify(Object.entries(tanks).map(([, v]) => v)));
+                return;
+            })
+            .then(() => {
+                let end = new Date() - currentDate;
+                console.log("Execution time: %dms", end);
+                resolve({ updateDate: currentDate, duration: end });
+            })
+            .catch((error) => {
+                console.log(error);
+                reject(error);
+            })
     });
 };
 
