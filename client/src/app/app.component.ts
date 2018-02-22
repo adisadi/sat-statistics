@@ -9,8 +9,8 @@ import { DataService } from './services/data.service';
 })
 export class AppComponent {
 
-  private clanInfo: any;
-  private title: string;
+  clanInfo: any;
+  title: string;
 
   constructor(private dataService: DataService) {
     this.dataService.getClanInfo()

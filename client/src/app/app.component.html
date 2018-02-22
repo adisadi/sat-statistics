@@ -1,6 +1,27 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" class="mat-elevation-z8">
   <img [src]="clanInfo?.emblems.x64.portal" />
-  <span style="padding-left:10px">{{title}} Statistics</span>
+  <span style="padding-left:10px"><b>{{title}}</b></span>
+  <span style="padding-left:10px">Clan Statistics</span>
+  <span style="flex: 1 1 auto"></span>
+
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <a style="text-decoration: none;" routerLink="/holz">
+      <button mat-menu-item>
+        <mat-icon>blur_on</mat-icon>
+        <span>Holzfäller</span>
+      </button>
+    </a>
+    <a style="text-decoration: none;" routerLink="/skirmish">
+      <button mat-menu-item >
+        <mat-icon>blur_on</mat-icon>
+        <span>Scharmützel</span>
+      </button>
+    </a>
+  </mat-menu>
+
 </mat-toolbar>
 <div style="height:20px"></div>
 <router-outlet></router-outlet>

@@ -1,7 +1,7 @@
 <div class="example-container mat-elevation-z8">
   <div class="mat-title" style="padding-top:10px;padding-left:10px">
-    Skirmish
+    Scharmützel
   </div>
   <app-options [dates]="dates" [selectedBaseline]="selectedBaseline" [selectedDate]="selectedDate" (onDatesChanged)="onDatesChanged($event)"></app-options>
-  <app-table [data]="dataSkirmish"></app-table>
+  <app-table [data]="dataSkirmish" [translateFields]="translatedColumns"></app-table>
 </div>

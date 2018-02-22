@@ -22,7 +22,7 @@ export class SkirmishService {
     params = params.append('date', currentDate);
     params = params.append('basedate', baseLineDate);
 
-    return this._clanData = this.http.get<any>(this.skirmishUrl,{params:params})
+    return this._clanData = this.http.get<any>(this.skirmishUrl, { params: params })
       .pipe(
         tap(heroes => this.log(`fetched skirmish`)),
         catchError(this.handleError('getSkirmishStat', []))
@@ -36,7 +36,7 @@ export class SkirmishService {
         catchError(this.handleError('getDates', []))
       )
       .map((res) => {
-        return res.map((e) => new Date(e));
+        return res.map((e) => new Date(e)).sort((a, b) => { return a - b; });
       });
   }
 

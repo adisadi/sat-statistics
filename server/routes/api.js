@@ -34,7 +34,6 @@ router.get('/stats', (req, res) => {
 router.get('/skirmish', (req, res) => {
     let date = req.query.date;
     let baseDate = req.query.basedate;
-
     redis.keysAsync("member*")
         .then((keys) => {
             let stats = [];
@@ -44,7 +43,7 @@ router.get('/skirmish', (req, res) => {
                     redis.hgetAsync(key, "data:" + date)
                         .then((obj) => {
                             let returnValue = { current: JSON.parse(obj), base: null }
-                            if (baseDate && baseDate.length > 0) {
+                            if (baseDate && baseDate.length > 0){
                                 return redis.hgetAsync(key, "data:" + baseDate)
                                     .then((baseObj) => {
                                         returnValue.base = JSON.parse(baseObj);
