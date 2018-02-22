@@ -16,4 +16,4 @@ rm -rf ./deploy/node_modules
 rm ./deploy.zip
 
 cd deploy
-zip -r ../deploy.zip .
+zip -rq ../deploy.zip .
