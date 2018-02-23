@@ -1,5 +1,5 @@
 <mat-toolbar color="primary" class="mat-elevation-z8">
-  <img [src]="clanInfo?.emblems.x64.portal" />
+  <img [src]="clanInfo?.emblems.x64.wot" />
   <span style="padding-left:10px"><b>{{title}}</b></span>
   <span style="padding-left:10px">Clan Statistics</span>
   <span style="flex: 1 1 auto"></span>
@@ -8,6 +8,12 @@
     <mat-icon>more_vert</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
+      <a style="text-decoration: none;" routerLink="/clan-info">
+        <button mat-menu-item >
+          <mat-icon>blur_on</mat-icon>
+          <span>Info</span>
+        </button>
+      </a>
     <a style="text-decoration: none;" routerLink="/holz">
       <button mat-menu-item>
         <mat-icon>blur_on</mat-icon>

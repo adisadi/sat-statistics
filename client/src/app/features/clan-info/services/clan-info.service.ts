@@ -1,33 +1,29 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-import { catchError, map, tap, share } from 'rxjs/operators';
-import 'rxjs/add/operator/share';
-
-import { MessageService } from './message.service';
+import { catchError, map, tap } from 'rxjs/operators';
+import 'rxjs/add/operator/map';
 
 @Injectable()
-export class DataService {
+export class ClanInfoService {
 
   private _clanData: Observable<any>;
 
-  private clanInfoUrl = '/api/clan';
+  private clanRatingUrl = '/api/clan-rating';
 
-  constructor(private http: HttpClient, private messageService: MessageService) { }
 
-  getClanInfo(): Observable<any> {
-    if (!this._clanData) {
-      this._clanData = this.http.get<any>(this.clanInfoUrl)
-        .pipe(
-          tap(heroes => this.log(`fetched clanInfo`)),
-          catchError(this.handleError('getClanInfo', []))
-        )
-        .share();
-    }
-    return this._clanData;
+  constructor(private http: HttpClient) { }
+
+  getClanRating(): Observable<any> {
+    return this._clanData = this.http.get<any>(this.clanRatingUrl,)
+      .pipe(
+        tap(heroes => this.log(`fetched clan-rating`)),
+        catchError(this.handleError('getClanRating', []))
+      )
   }
+
 
   /**
    * Handle Http operation that failed.
@@ -52,7 +48,6 @@ export class DataService {
   /** Log a HeroService message with the MessageService */
   private log(message: string) {
     console.log(message);
-    this.messageService.add('DataService: ' + message);
   }
 
 

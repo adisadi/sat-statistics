@@ -13,6 +13,8 @@ import { MessageService } from './services/message.service';
 
 import {TreeCutModule} from './features/tree-cut/tree-cut.module';
 import {SkirmishModule} from './features/skirmish/skirmish.module';
+import {ClanInfoModule} from './features/clan-info/clan-info.module';
+
 
 @NgModule({
   declarations: [
@@ -25,7 +27,8 @@ import {SkirmishModule} from './features/skirmish/skirmish.module';
     MaterialModule,
     HttpClientModule,
     TreeCutModule,
-    SkirmishModule
+    SkirmishModule,
+    ClanInfoModule
   ],
   providers: [DataService, MessageService],
   bootstrap: [AppComponent]
