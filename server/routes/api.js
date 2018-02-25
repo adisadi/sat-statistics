@@ -43,7 +43,6 @@ router.get('/stats', asyncMiddleware(async (req, res, next) => {
 
 router.get('/clan-rating', asyncMiddleware(async (req, res, next) => {
     let stats = await redis.getAsync("clan-rating");
-    console.log(stats);
     res.json(JSON.parse(stats));
 }));
 

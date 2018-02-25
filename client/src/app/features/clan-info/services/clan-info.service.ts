@@ -17,11 +17,11 @@ export class ClanInfoService {
   constructor(private http: HttpClient) { }
 
   getClanRating(): Observable<any> {
-    return this._clanData = this.http.get<any>(this.clanRatingUrl,)
+    return this._clanData = this.http.get<any>(this.clanRatingUrl)
       .pipe(
         tap(heroes => this.log(`fetched clan-rating`)),
         catchError(this.handleError('getClanRating', []))
-      )
+      );
   }
 
 

@@ -53,7 +53,7 @@ async function getPlayerTanksData(id) {
         extra: "random,epic,ranked",
         fields: "-clan,-company"
     });
-    return response.data;
+    return response.data[id];
 }
 
 async function importData() {
@@ -96,6 +96,27 @@ async function importData() {
             //Tanks Data
             let tanksData = await getTanksData();
             redis.setAsync("tanks", JSON.stringify(Object.entries(tanksData).map(([, v]) => v)));
+
+            //Tanks Player Data
+           /*  for (let m of info.members){
+                let playerTanks=await getPlayerTanksData(m.account_id);
+              
+                let copy={}
+                for (let t of playerTanks){
+                    for (let p in t){
+                        console.log(p);
+                        if (t[p]!==null && t[p].battles){
+                            if (t[p].battles>0){
+                                copy[p]=t[p];
+                            }
+                        }else{
+                            copy[p]=t[p];
+                        }
+                    }
+
+                    await redis.hmsetAsync("tanks:" + t.tank_id, "member:" + m.account_id, JSON.stringify(copy));
+                }
+            } */
   
             let end = new Date() - currentDate;
             console.log("Execution time: %dms", end);

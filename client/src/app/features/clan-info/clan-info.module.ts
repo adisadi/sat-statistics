@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 import { MaterialModule } from '../../modules/material.module';
 import { DataService } from '../../services/data.service';
 import { ClanInfoService } from './services/clan-info.service';
@@ -13,10 +15,11 @@ import { ClanInfoComponent } from './components/clan-info.component';
   imports: [
     CommonModule,
     ClanInfoRoutingModule,
-    MaterialModule
+    MaterialModule,
+    FlexLayoutModule
   ],
   exports: [ClanInfoComponent],
   declarations: [ClanInfoComponent],
-  providers:[DataService,ClanInfoService]
+  providers: [DataService, ClanInfoService]
 })
 export class ClanInfoModule { }

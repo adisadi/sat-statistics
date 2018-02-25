@@ -1,47 +1,68 @@
-<div>
-  <mat-card style="max-width: 400px">
-    <mat-card-header>
+<div fxLayout="row wrap" fxLayoutAlign="space-around" fxLayoutGap="10px">
+  <div fxLayoutAlign="stretch" flex="50%">
+    <mat-card style="max-width: 400px">
+      <mat-card-header>
 
-      <mat-card-title>
-        <img [src]="clanInfo?.emblems.x64.wot" style="height:32px;width:32px">
-        <span>{{clanInfo?.tag}} {{clanInfo?.name}}</span>
-      </mat-card-title>
-      <mat-card-subtitle>
-        since {{ clanInfo?.created_at * 1000 | date}}
-      </mat-card-subtitle>
-    </mat-card-header>
+        <mat-card-title>
+          <img [src]="clanInfo?.emblems.x64.wot" style="height:32px;width:32px">
+          <span>{{clanInfo?.tag}} {{clanInfo?.name}}</span>
+        </mat-card-title>
+        <mat-card-subtitle>
+          since {{ clanInfo?.created_at * 1000 | date}}
+        </mat-card-subtitle>
+      </mat-card-header>
 
-    <mat-card-content>
-      <p>
-        Kommandant: {{clanInfo?.leader_name}}
-      </p>
-      <p>
-        {{clanInfo?.description}}
-      </p>
-      <p>
-        {{clanInfo?.motto}}
-      </p>
+      <mat-card-content>
+        <p>
+          Kommandant: {{clanInfo?.leader_name}}
+        </p>
+        <p>
+          {{clanInfo?.description}}
+        </p>
+        <p>
+          {{clanInfo?.motto}}
+        </p>
 
-    </mat-card-content>
-  </mat-card>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>
+          <img [src]="clanInfo?.emblems.x64.wot" style="height:32px;width:32px">
+          <span>Ratings:</span>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <table class="ratingTable">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Rang</th>
+              <th>Delta</th>
+              <th>Wert</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let r of clanRatings">
+              <td>
+                <span>{{r.name}}</span>
+              </td>
+              <td>
+                <span>{{r.rank}}</span>
+              </td>
+              <td>
+                <span [ngClass]="{negativ_delta:r.rank_delta<0,positive_delta:r.rank_delta>0}">{{r.rank_delta}}</span>
+              </td>
+              <td>
+                <span>{{r.value}}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </mat-card-content>
 
-  <mat-card style="max-width: 400px">
-    <mat-card-header>
-      <mat-card-title>
-        Ratings:
-      </mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <mat-list dense>
-        <mat-list-item *ngFor="let r of clanRatings">
-          <span class="mat-title">{{r.name}}</span>
-          <span class="mat-body-1">{{r.rank}}</span>
-          <span>{{r.rank_delta}}</span>
-          <span>{{r.value}}</span>
-
-        </mat-list-item>
-      </mat-list>
-    </mat-card-content>
-
-  </mat-card>
+    </mat-card>
+  </div>
 </div>

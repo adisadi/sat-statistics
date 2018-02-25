@@ -1,0 +1,23 @@
+.ratingTable th,td{
+    padding-left: 10px;
+    text-align: left;
+}
+
+.negativ_delta{
+    color:red;
+}
+.positive_delta{
+    color:green;
+}
+
+.flexContainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items:stretch;
+}
+
+.flexContainer > div{
+   
+}

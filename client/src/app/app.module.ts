@@ -1,7 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule }    from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
+import {FlexLayoutModule} from '@angular/flex-layout';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -23,6 +24,7 @@ import {ClanInfoModule} from './features/clan-info/clan-info.module';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    FlexLayoutModule,
     AppRoutingModule,
     MaterialModule,
     HttpClientModule,

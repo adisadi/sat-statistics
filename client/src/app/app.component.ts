@@ -16,7 +16,7 @@ export class AppComponent {
     this.dataService.getClanInfo()
       .subscribe((info) => {
         this.clanInfo = info;
-        this.title=this.clanInfo.tag;
+        this.title = this.clanInfo.tag;
       });
   }
 }
