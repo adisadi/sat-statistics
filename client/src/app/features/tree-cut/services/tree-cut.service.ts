@@ -8,19 +8,19 @@ import { catchError, map, tap } from 'rxjs/operators';
 @Injectable()
 export class TreeCutService {
 
-  private _clanData: Observable<any>;
+
 
   private treeCutUrl = '/api/tree-cut';
 
   constructor(private http: HttpClient) { }
 
-  getTreeCutStat():Observable<any> {
-   
-     return this._clanData = this.http.get<any>(this.treeCutUrl)
-        .pipe(
-          tap(heroes => this.log(`fetched tree-cut`)),
-          catchError(this.handleError('getTreeCutStat', []))
-        )
+  async getTreeCutStat(): Promise<any> {
+
+    return await this.http.get<any>(this.treeCutUrl)
+      .pipe(
+        tap(heroes => this.log(`fetched tree-cut`)),
+        catchError(this.handleError('getTreeCutStat', []))
+      ).toPromise();
   }
 
   /**

@@ -17,7 +17,7 @@ export class TreeCutComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private treeCutService: TreeCutService) {
-    this.treeCutService.getTreeCutStat().subscribe((res) => {
+    this.treeCutService.getTreeCutStat().then((res) => {
 
       //Compute Average
       res.forEach(element => {

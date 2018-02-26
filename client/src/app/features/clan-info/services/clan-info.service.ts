@@ -9,19 +9,24 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class ClanInfoService {
 
-  private _clanData: Observable<any>;
+  private _clanData: any;
 
   private clanRatingUrl = '/api/clan-rating';
 
 
   constructor(private http: HttpClient) { }
 
-  getClanRating(): Observable<any> {
-    return this._clanData = this.http.get<any>(this.clanRatingUrl)
-      .pipe(
-        tap(heroes => this.log(`fetched clan-rating`)),
-        catchError(this.handleError('getClanRating', []))
-      );
+  async getClanRating(): Promise<any> {
+    if (!this._clanData) {
+      this._clanData = await this.http.get<any>(this.clanRatingUrl)
+        .pipe(
+          tap(heroes => this.log(`fetched clan-rating`)),
+          catchError(this.handleError('getClanRating', []))
+        ).toPromise();
+    }
+
+    return this._clanData;
+
   }
 
 

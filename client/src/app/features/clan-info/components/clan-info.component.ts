@@ -30,11 +30,10 @@ export class ClanInfoComponent implements OnInit {
 
   constructor(private dataService: DataService, private clanInfoService: ClanInfoService) {
     this.dataService.getClanInfo()
-      .subscribe((info) => {
+      .then((info) => {
         this.clanInfo = info;
-        console.log(this.clanInfo);
       });
-    this.clanInfoService.getClanRating().subscribe((rating) => {
+    this.clanInfoService.getClanRating().then((rating) => {
 
       const temp: any[] = [];
       for (const r in rating) {
@@ -51,7 +50,6 @@ export class ClanInfoComponent implements OnInit {
       this.clanRatings = temp.sort((a, b) => {
         return a.name.localeCompare(b.name);
       });
-      console.log(this.clanRatings);
     });
   }
 

@@ -7,7 +7,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import 'rxjs/add/operator/map';
 
 @Injectable()
-export class SkirmishService {
+export class PersonalStatsService {
 
   private skirmishUrl = '/api/skirmish';
   private datesUrl = '/api/dates';

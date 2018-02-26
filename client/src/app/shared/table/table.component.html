@@ -1,0 +1,21 @@
+<mat-form-field>
+  <mat-select placeholder="Spalten wählen" multiple [(value)]="displayedColumns">
+    <mat-select-trigger>
+      <span *ngIf="displayedColumns?.length > 1" class="example-additional-selection">
+        (+{{displayedColumns.length}} columns)
+      </span>
+    </mat-select-trigger>
+    <mat-option *ngFor="let column of allColumns" [value]="column">{{translateFields[column]?translateFields[column]:column}}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-table #table [dataSource]="dataSource" matSort>
+  <ng-container *ngFor="let col of displayedColumns" matColumnDef={{col}}>
+    <mat-header-cell *matHeaderCellDef mat-sort-header> {{ translateFields[col] }}</mat-header-cell>
+    <mat-cell *matCellDef="let row"> {{row[col]}}</mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+<mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20, 50, 100]" [showFirstLastButtons]="true">
+</mat-paginator>

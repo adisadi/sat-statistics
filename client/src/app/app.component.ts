@@ -14,7 +14,7 @@ export class AppComponent {
 
   constructor(private dataService: DataService) {
     this.dataService.getClanInfo()
-      .subscribe((info) => {
+      .then((info) => {
         this.clanInfo = info;
         this.title = this.clanInfo.tag;
       });

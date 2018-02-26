@@ -10,11 +10,12 @@ import { AppComponent } from './app.component';
 import { DataService } from './services/data.service';
 
 import { MaterialModule } from './modules/material.module';
-import { MessageService } from './services/message.service';
 
 import {TreeCutModule} from './features/tree-cut/tree-cut.module';
 import {SkirmishModule} from './features/skirmish/skirmish.module';
 import {ClanInfoModule} from './features/clan-info/clan-info.module';
+import {PersonalStatsModule} from './features/personal-stats/personal-stats.module';
+
 
 
 @NgModule({
@@ -30,9 +31,10 @@ import {ClanInfoModule} from './features/clan-info/clan-info.module';
     HttpClientModule,
     TreeCutModule,
     SkirmishModule,
-    ClanInfoModule
+    ClanInfoModule,
+    PersonalStatsModule
   ],
-  providers: [DataService, MessageService],
+  providers: [DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
