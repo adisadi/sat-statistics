@@ -21,7 +21,7 @@ async function getClanId() {
     return response.data[0].clan_id;
 };
 
-async function getClanRatings(clan_id: number):Promise<any> {
+async function getClanRatings(clan_id: number): Promise<any> {
     var response = await wot.get('clanratings/clans', { clan_id: clan_id, language: WOTLanguage });
     return response.data[clan_id];
 }
@@ -33,7 +33,7 @@ async function getClanInfos(clan_id: number): Promise<any> {
 };
 
 
-async function getPlayerPersonalData(ids: number[]): Promise<any[]> {
+async function getPlayerPersonalData(ids: number[]): Promise<any> {
     var response = await wot.get('account/info', {
         account_id: ids.toString(), language: WOTLanguage,
         extra: "statistics.random,statistics.ranked_battles,statistics.ranked_battles_current,statistics.ranked_battles_previous,statistics.epic",
@@ -57,61 +57,59 @@ async function getPlayerTanksData(id: number) {
 }
 
 export async function importData(): Promise<{ updateDate: Date, duration: number }> {
-    try {
-        let currentDate = new Date();
-        let currentDateWithoutTime = getCurrentDateWithoutTime(currentDate);
 
-        let singleObjects: any[] = [{ name: "execution-time", json: JSON.stringify(currentDate) }];
+    let currentDate = new Date();
+    let currentDateWithoutTime = getCurrentDateWithoutTime(currentDate);
 
-        //Clan Id
-        let clanId = await getClanId();
+    let singleObjects: any[] = [{ name: "execution-time", json: JSON.stringify(currentDate) }];
 
-        //Clan Infos
-        let info = await getClanInfos(clanId);
-        singleObjects.push({ name: "clan-info", json: JSON.stringify(info) });
+    //Clan Id
+    let clanId = await getClanId();
 
-        //ClanRatings
-        let clanRatings = await getClanRatings(clanId);
-        singleObjects.push({ name: "clan-rating", json: JSON.stringify(clanRatings) });
+    //Clan Infos
+    let info = await getClanInfos(clanId);
+    singleObjects.push({ name: "clan-info", json: JSON.stringify(info) });
 
-        //Tanks
-        let tanksData = await getTanksData();
-        singleObjects.push({ name: "tanks", json: JSON.stringify(tanksData) });
+    //ClanRatings
+    let clanRatings = await getClanRatings(clanId);
+    singleObjects.push({ name: "clan-rating", json: JSON.stringify(clanRatings) });
 
-        //Player Personal Data
-        let stats = await getPlayerPersonalData(info.members.map((e: any) => e.account_id));
+    //Tanks
+    let tanksData = await getTanksData();
+    singleObjects.push({ name: "tanks", json: JSON.stringify(tanksData) });
 
-        let personalStats: any[] = Object.keys(stats).map((key:string)=> stats[key]).map((s: any) => {
-            return {
-                account_id: s.account_id,
-                date: currentDateWithoutTime,
-                json: JSON.stringify(s)
-            }
-        });
+    //Player Personal Data
+    let stats = await getPlayerPersonalData(info.members.map((e: any) => e.account_id));
 
-        // Player Tanks Data
-        let playerTanksStats = []
-        for (let m of info.members) {
-            let playerTanks = await getPlayerTanksData(m.account_id);
-            for (let t of playerTanks) {
-                playerTanksStats.push({
-                    account_id: m.account_id,
-                    date: currentDateWithoutTime,
-                    tank_id: t.tank_id,
-                    json: JSON.stringify(t)
-                });
-            }
+    let personalStats: any[] = Object.keys(stats).map((key: string) => <any>stats[key] ).map((s: any) => {
+        return {
+            account_id: s.account_id,
+            date: +currentDateWithoutTime,
+            json: JSON.stringify(s)
         }
+    });
 
-        generate(config.database.file, singleObjects, personalStats, playerTanksStats);
-
-        let end = +new Date() - +currentDate;
-        console.log("Execution time: %dms", end);
-
-        return { updateDate: currentDate, duration: end };
-    } catch (error) {
-        throw error;
+    // Player Tanks Data
+    let playerTanksStats = []
+    for (let m of info.members) {
+        let playerTanks = await getPlayerTanksData(m.account_id);
+        for (let t of playerTanks) {
+            playerTanksStats.push({
+                account_id: m.account_id,
+                date: +currentDateWithoutTime,
+                tank_id: t.tank_id,
+                json: JSON.stringify(t)
+            });
+        }
     }
+
+    generate(config.database.file, singleObjects, personalStats, playerTanksStats);
+
+    let end = +new Date() - +currentDate;
+    console.log("Execution time: %dms", end);
+
+    return { updateDate: currentDate, duration: end };
+
 
 }
 

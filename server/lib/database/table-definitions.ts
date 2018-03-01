@@ -12,7 +12,7 @@ export interface ITableDefinition {
     TableName: string,
     Fields: IFieldDefinition[],
     UniqueKeys: IUniqueKeyDefinition[] | null,
-    EmptyTable:boolean
+    EmptyTable: boolean
 }
 
 
@@ -24,7 +24,7 @@ export const PersonalStatTable: ITableDefinition = {
         { Name: "json", Type: "TEXT" }
     ],
     UniqueKeys: [{ Name: "I_UQ_PERSONALSTATS", Fields: ["account_id", "date"] }],
-    EmptyTable:false
+    EmptyTable: false
 }
 
 export const PlayerTankStatTable: ITableDefinition = {
@@ -35,8 +35,8 @@ export const PlayerTankStatTable: ITableDefinition = {
         { Name: "date", Type: "INTEGER" },
         { Name: "json", Type: "TEXT" }
     ],
-    UniqueKeys: [{ Name: "I_UQ_PLAYERTANKSTATS", Fields: ["account_id", "date"] }],
-    EmptyTable:false
+    UniqueKeys: [{ Name: "I_UQ_PLAYERTANKSTATS", Fields: ["account_id", "date", "tank_id"] }],
+    EmptyTable: false
 }
 
 export const SingleObjectTable: ITableDefinition = {
@@ -46,7 +46,7 @@ export const SingleObjectTable: ITableDefinition = {
         { Name: "json", Type: "INTEGER" }
     ],
     UniqueKeys: [{ Name: "I_UQ_SINGLEOBJECTS", Fields: ["name"] }],
-    EmptyTable:true
+    EmptyTable: true
 }
 
 

@@ -23,10 +23,10 @@ router.get('/tanks', (req, res, next) => {
     let tanksData = wot_get_1.getSingleObject("tanks");
     res.json(tanksData);
 });
-/* router.get('/dates',  (req, res, next) => {
-    let dates = await redis.smembersAsync("dates")
+router.get('/dates', (req, res, next) => {
+    let dates = wot_get_1.getStatDates();
     res.json(dates);
-}); */
+});
 router.get('/clan-rating', (req, res, next) => {
     let stats = wot_get_1.getSingleObject("clan-rating");
     res.json(stats);
@@ -43,26 +43,32 @@ router.get('/personal-stats', (req, res, next) => __awaiter(this, void 0, void 0
 }));
 router.get('/updateStats/:force?', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
     var force = req.params.force;
-    let executionDate = null;
     try {
-        executionDate = wot_get_1.getSingleObject("execution-time");
+        let executionDate = null;
+        try {
+            executionDate = new Date(wot_get_1.getSingleObject("execution-time"));
+        }
+        catch (error) {
+            logger_1.default.error(error);
+        }
+        if (!executionDate || executionDate.getDate() != new Date().getDate() || (force === 'true')) {
+            try {
+                let r = yield wot_import_1.importData();
+                logger_1.default.info('/updateStats', { status: 'UPDATED', lastUpdate: r.updateDate, executionTime: r.duration });
+                res.json({ status: 'UPDATED', lastUpdate: r.updateDate, executionTime: r.duration });
+            }
+            catch (err) {
+                logger_1.default.error('/updateStats', err);
+                res.json({ status: 'ERROR', error: err.toString() });
+            }
+        }
+        else {
+            logger_1.default.info('/updateStats', { status: 'NOTUPDATED', lastUpdate: executionDate });
+            res.json({ status: 'NOTUPDATED', lastUpdate: executionDate });
+        }
     }
     catch (error) {
-    }
-    if (!executionDate || executionDate.getDate() != new Date().getDate() || (force === 'true')) {
-        try {
-            let r = yield wot_import_1.importData();
-            logger_1.default.info('/updateStats', { status: 'UPDATED', lastUpdate: r.updateDate, executionTime: r.duration });
-            res.json({ status: 'UPDATED', lastUpdate: r.updateDate, executionTime: r.duration });
-        }
-        catch (err) {
-            logger_1.default.error('/updateStats', err);
-            res.json({ status: 'ERROR', error: err.toString() });
-        }
-    }
-    else {
-        logger_1.default.info('/updateStats', { status: 'NOTUPDATED', lastUpdate: executionDate });
-        res.json({ status: 'NOTUPDATED', lastUpdate: executionDate });
+        next(error);
     }
 }));
 module.exports = router;

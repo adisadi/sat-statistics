@@ -7,18 +7,8 @@ import morgan from 'morgan';
 import api from './routes/api';
 
 const app = express();
-/* //Morgan logging
-app.use(morgan('dev', {
-    skip: function (req:Request, res:Response) {
-        return res.status < 400
-    }, stream: process.stderr
-}));
 
-app.use(morgan('dev', {
-    skip: function (req:Request, res:Response) {
-        return res.status >= 400
-    }, stream: process.stdout
-})); */
+app.use(morgan("dev"));
 
 // Set our api routes
 app.use('/api', api);

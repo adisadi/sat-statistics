@@ -11,6 +11,12 @@ export function getSingleObject(name: SingleObjectNames): any {
     return JSON.parse(row.json);
 }
 
+export function getStatDates(): number[] {
+    let db = new Database(config.database.file);
+    let rows = db.prepare('SELECT DISTINCT date FROM ' + definitons.PersonalStatTable.TableName + ' ORDER BY date').all();
+    return rows.map(d=>d.date);
+}
+
 export function getPersonalStats(currentDate: Date, baseDate: Date | null, stat: string) {
     let db = new Database(config.database.file);
     let rows_current = db.prepare('SELECT * FROM ' + definitons.PersonalStatTable.TableName + ' WHERE date=?').all([currentDate]);
@@ -48,7 +54,7 @@ export function getPlayerTanksStat(currentDate: Date, baseDate: Date, stat: stri
         rows_base = db.prepare('SELECT * FROM ' + definitons.PlayerTankStatTable.TableName + ' WHERE date=? AND tank_id=?').all([baseDate, tank_id]);
     }
 
-    return rows_current.map((r:any) => {
+    return rows_current.map((r: any) => {
         let obj = JSON.parse(r.json);
         let baseObj = null;
         let baseRow = rows_base.find(b => b.account_id === r.account_id && b.tank_id === r.tank_id);

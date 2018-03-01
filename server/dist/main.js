@@ -7,21 +7,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
 const http_1 = __importDefault(require("http"));
+const morgan_1 = __importDefault(require("morgan"));
 // Get our API routes
 const api_1 = __importDefault(require("./routes/api"));
 const app = express_1.default();
-/* //Morgan logging
-app.use(morgan('dev', {
-    skip: function (req:Request, res:Response) {
-        return res.status < 400
-    }, stream: process.stderr
-}));
-
-app.use(morgan('dev', {
-    skip: function (req:Request, res:Response) {
-        return res.status >= 400
-    }, stream: process.stdout
-})); */
+app.use(morgan_1.default("dev"));
 // Set our api routes
 app.use('/api', api_1.default);
 // Point static path to dist

@@ -18,7 +18,7 @@ exports.PlayerTankStatTable = {
         { Name: "date", Type: "INTEGER" },
         { Name: "json", Type: "TEXT" }
     ],
-    UniqueKeys: [{ Name: "I_UQ_PLAYERTANKSTATS", Fields: ["account_id", "date"] }],
+    UniqueKeys: [{ Name: "I_UQ_PLAYERTANKSTATS", Fields: ["account_id", "date", "tank_id"] }],
     EmptyTable: false
 };
 exports.SingleObjectTable = {

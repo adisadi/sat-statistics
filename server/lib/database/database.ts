@@ -20,7 +20,7 @@ function genericCreateTableAndInserts(db: any, def: defintions.ITableDefinition,
         db.prepare("DELETE FROM " + def.TableName).run();   
     }
 
-    let stmt = db.prepare("INSERT INTO " + def.TableName + " VALUES (" + def.Fields.map(c => { return "?"; }).join(",") + ")");
+    let stmt = db.prepare("INSERT OR REPLACE INTO " + def.TableName + " VALUES (" + def.Fields.map(c => { return "?"; }).join(",") + ")");
 
     for (let o of objs){
 

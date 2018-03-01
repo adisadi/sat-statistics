@@ -6,7 +6,7 @@ import { NextFunction, RequestHandler } from 'express';
 const router = express.Router();
 
 import { importData } from '../lib/wot-import';
-import { SingleObjectNames, getSingleObject, getPersonalStats, getPlayerTanksStat } from '../lib/wot-get';
+import { SingleObjectNames, getSingleObject, getPersonalStats, getPlayerTanksStat,getStatDates } from '../lib/wot-get';
 
 router.get('/clan', (req, res, next) => {
     let clanInfo = getSingleObject("clan-info");
@@ -18,10 +18,10 @@ router.get('/tanks', (req, res, next) => {
     res.json(tanksData);
 });
 
-/* router.get('/dates',  (req, res, next) => {
-    let dates = await redis.smembersAsync("dates")
+router.get('/dates',  (req, res, next) => {
+    let dates = getStatDates();
     res.json(dates);
-}); */
+}); 
 
 router.get('/clan-rating', (req, res, next) => {
     let stats = getSingleObject("clan-rating");
@@ -44,28 +44,33 @@ router.get('/personal-stats', async (req, res, next) => {
 router.get('/updateStats/:force?', async (req, res, next) => {
     var force = req.params.force;
 
-    let executionDate = null;
     try {
-        executionDate = getSingleObject("execution-time");
-    } catch (error) {
+        let executionDate = null;
 
-    }
-
-    if (!executionDate || executionDate.getDate() != new Date().getDate() || (force === 'true')) {
         try {
-            let r = await importData();
-
-            winston.info('/updateStats', { status: 'UPDATED', lastUpdate: r.updateDate, executionTime: r.duration });
-            res.json({ status: 'UPDATED', lastUpdate: r.updateDate, executionTime: r.duration });
-        } catch (err) {
-            winston.error('/updateStats', err);
-            res.json({ status: 'ERROR', error: err.toString() });
+            executionDate = new Date(getSingleObject("execution-time"));
+        } catch (error) {
+            winston.error(error);
         }
 
-    }
-    else {
-        winston.info('/updateStats', { status: 'NOTUPDATED', lastUpdate: executionDate });
-        res.json({ status: 'NOTUPDATED', lastUpdate: executionDate });
+        if (!executionDate || executionDate.getDate() != new Date().getDate() || (force === 'true')) {
+            try {
+                let r = await importData();
+
+                winston.info('/updateStats', { status: 'UPDATED', lastUpdate: r.updateDate, executionTime: r.duration });
+                res.json({ status: 'UPDATED', lastUpdate: r.updateDate, executionTime: r.duration });
+            } catch (err) {
+                winston.error('/updateStats', err);
+                res.json({ status: 'ERROR', error: err.toString() });
+            }
+
+        }
+        else {
+            winston.info('/updateStats', { status: 'NOTUPDATED', lastUpdate: executionDate });
+            res.json({ status: 'NOTUPDATED', lastUpdate: executionDate });
+        }
+    } catch (error) {
+        next(error);
     }
 });
 

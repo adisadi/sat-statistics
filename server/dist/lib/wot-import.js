@@ -67,51 +67,46 @@ function getPlayerTanksData(id) {
 }
 function importData() {
     return __awaiter(this, void 0, void 0, function* () {
-        try {
-            let currentDate = new Date();
-            let currentDateWithoutTime = getCurrentDateWithoutTime(currentDate);
-            let singleObjects = [{ name: "execution-time", json: JSON.stringify(currentDate) }];
-            //Clan Id
-            let clanId = yield getClanId();
-            //Clan Infos
-            let info = yield getClanInfos(clanId);
-            singleObjects.push({ name: "clan-info", json: JSON.stringify(info) });
-            //ClanRatings
-            let clanRatings = yield getClanRatings(clanId);
-            singleObjects.push({ name: "clan-rating", json: JSON.stringify(clanRatings) });
-            //Tanks
-            let tanksData = yield getTanksData();
-            singleObjects.push({ name: "tanks", json: JSON.stringify(tanksData) });
-            //Player Personal Data
-            let stats = yield getPlayerPersonalData(info.members.map((e) => e.account_id));
-            let personalStats = Object.keys(stats).map((key) => stats[key]).map((s) => {
-                return {
-                    account_id: s.account_id,
-                    date: currentDateWithoutTime,
-                    json: JSON.stringify(s)
-                };
-            });
-            // Player Tanks Data
-            let playerTanksStats = [];
-            for (let m of info.members) {
-                let playerTanks = yield getPlayerTanksData(m.account_id);
-                for (let t of playerTanks) {
-                    playerTanksStats.push({
-                        account_id: m.account_id,
-                        date: currentDateWithoutTime,
-                        tank_id: t.tank_id,
-                        json: JSON.stringify(t)
-                    });
-                }
+        let currentDate = new Date();
+        let currentDateWithoutTime = getCurrentDateWithoutTime(currentDate);
+        let singleObjects = [{ name: "execution-time", json: JSON.stringify(currentDate) }];
+        //Clan Id
+        let clanId = yield getClanId();
+        //Clan Infos
+        let info = yield getClanInfos(clanId);
+        singleObjects.push({ name: "clan-info", json: JSON.stringify(info) });
+        //ClanRatings
+        let clanRatings = yield getClanRatings(clanId);
+        singleObjects.push({ name: "clan-rating", json: JSON.stringify(clanRatings) });
+        //Tanks
+        let tanksData = yield getTanksData();
+        singleObjects.push({ name: "tanks", json: JSON.stringify(tanksData) });
+        //Player Personal Data
+        let stats = yield getPlayerPersonalData(info.members.map((e) => e.account_id));
+        let personalStats = Object.keys(stats).map((key) => stats[key]).map((s) => {
+            return {
+                account_id: s.account_id,
+                date: +currentDateWithoutTime,
+                json: JSON.stringify(s)
+            };
+        });
+        // Player Tanks Data
+        let playerTanksStats = [];
+        for (let m of info.members) {
+            let playerTanks = yield getPlayerTanksData(m.account_id);
+            for (let t of playerTanks) {
+                playerTanksStats.push({
+                    account_id: m.account_id,
+                    date: +currentDateWithoutTime,
+                    tank_id: t.tank_id,
+                    json: JSON.stringify(t)
+                });
             }
-            database_1.generate(config.database.file, singleObjects, personalStats, playerTanksStats);
-            let end = +new Date() - +currentDate;
-            console.log("Execution time: %dms", end);
-            return { updateDate: currentDate, duration: end };
         }
-        catch (error) {
-            throw error;
-        }
+        database_1.generate(config.database.file, singleObjects, personalStats, playerTanksStats);
+        let end = +new Date() - +currentDate;
+        console.log("Execution time: %dms", end);
+        return { updateDate: currentDate, duration: end };
     });
 }
 exports.importData = importData;
