@@ -1,1 +1,15 @@
-<app-shared-table [data]="dataSkirmish" [translateFields]="translatedColumns" [defaultSort]="defaultSort" [displayedColumns]="displayedColumns"></app-shared-table>
+<div class="example-container mat-elevation-z8">
+    <div class="mat-title" style="padding-top:10px;padding-left:10px">
+        Stats
+    </div>
+
+    <mat-form-field>
+        <mat-select placeholder="Stat" [(value)]="selectedStat" (selectionChange)="statChanged()">
+            <mat-option *ngFor="let s of stats" [value]="s">
+                {{ s }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <app-shared-table [data]="dataSkirmish" [translateFields]="translatedColumns" [defaultSort]="defaultSort" [displayedColumns]="displayedColumns"></app-shared-table>
+</div>

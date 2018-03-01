@@ -21,12 +21,15 @@ export class PersonalStatsComponent implements OnInit {
     rating: 'Rating'
   };
 
+  stats = ['stronghold_skirmish', 'all', 'random', 'epic',
+    'ranked_battles', 'ranked_battles_current', 'ranked_battles_previous', 'company'];
+  selectedStat = 'all';
   dataSkirmish;
   dates;
   selectedDate;
-  defaultSort = { column: "nickname", order: "asc" };
+  defaultSort = { column: 'nickname', order: 'asc' };
 
-  displayedColumns = ["nickname", "battles"];
+  displayedColumns = ['nickname', 'battles'];
 
   constructor(private personalStatsService: PersonalStatsService) {
     this.personalStatsService.getDates().then((dates) => {
@@ -41,8 +44,12 @@ export class PersonalStatsComponent implements OnInit {
   ngOnInit() {
   }
 
+  statChanged() {
+    this.loadSkirmishData();
+  }
+
   loadSkirmishData() {
-    this.personalStatsService.getSkirmishStat('', this.selectedDate.toISOString())
+    this.personalStatsService.getPersonalStat(this.selectedStat, undefined, +this.selectedDate)
       .then((res) => {
         this.dataSkirmish = res.map(e => {
           let obj = {};

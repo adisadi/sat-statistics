@@ -6,11 +6,15 @@ import { PersonalStatshRoutingModule } from './personal-stats.routing';
 
 import { PersonalStatsComponent } from './components/personal-stats.component';
 import { PersonalStatsService } from './services/personal-stats.service';
+
+import { MaterialModule } from '../../modules/material.module';
+
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
-    PersonalStatshRoutingModule
+    PersonalStatshRoutingModule,
+    MaterialModule
   ],
   exports: [PersonalStatsComponent],
   providers: [PersonalStatsService],
