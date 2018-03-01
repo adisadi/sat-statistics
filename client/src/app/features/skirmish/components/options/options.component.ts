@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output,Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 
 import { SkirmishService } from '../../services/skirmish.service';
 
@@ -29,7 +29,7 @@ export class OptionsComponent implements OnInit {
 
   datesChanged() {
     console.log('dateChanged');
-    this.onDatesChanged.emit({date:this.selectedDate,base:this.selectedBaseline});
+    this.onDatesChanged.emit({ date: this.selectedDate, base: this.selectedBaseline });
   }
 
 }

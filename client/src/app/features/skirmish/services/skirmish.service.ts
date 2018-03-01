@@ -9,29 +9,32 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class SkirmishService {
 
-  private skirmishUrl = '/api/skirmish';
+  private skirmishUrl = '/api/personal-stats';
   private datesUrl = '/api/dates';
 
   constructor(private http: HttpClient) { }
 
-  async getSkirmishStat(baseLineDate: string, currentDate: string): Promise<any> {
+  async getSkirmishStat(baseLineDate: number | undefined, currentDate: number): Promise<any> {
 
     let params = new HttpParams();
-    params = params.append('date', currentDate);
-    params = params.append('basedate', baseLineDate);
+    params = params.append('stat', 'stronghold_skirmish');
+    params = params.append('date', currentDate.toString());
+    if (baseLineDate) {
+      params = params.append('basedate', baseLineDate.toString());
+    }
 
     return await this.http.get<any>(this.skirmishUrl, { params: params })
       .pipe(
-        tap(heroes => this.log(`fetched skirmish`)),
-        catchError(this.handleError('getSkirmishStat', []))
+      tap(heroes => this.log(`fetched skirmish`)),
+      catchError(this.handleError('getSkirmishStat', []))
       ).toPromise();
   }
 
   async getDates(): Promise<Date[]> {
     return await this.http.get<any>(this.datesUrl)
       .pipe(
-        tap(heroes => this.log(`fetched dates`)),
-        catchError(this.handleError('getDates', []))
+      tap(heroes => this.log(`fetched dates`)),
+      catchError(this.handleError('getDates', []))
       )
       .map((res) => {
         return res.map((e) => new Date(e)).sort((a, b) => { return a - b; });

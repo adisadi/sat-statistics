@@ -22,7 +22,7 @@ export class SkirmishComponent implements OnInit {
     wins_battles_ratio: 'Wins/Gefechte',
     piercings_piercings_rec_ratio: 'Durchschläge/Durchschläge erhalten',
     piercing_hits_ratio: 'Durchschläge/Treffer',
-    rating:'Rating'
+    rating: 'Rating'
   };
 
   constructor(private skirmishService: SkirmishService) {
@@ -45,10 +45,10 @@ export class SkirmishComponent implements OnInit {
   }
 
   loadSkirmishData() {
-    this.skirmishService.getSkirmishStat(this.selectedBaseline ? this.selectedBaseline.toISOString() : '', this.selectedDate.toISOString())
+    this.skirmishService.getSkirmishStat(this.selectedBaseline ? +this.selectedBaseline : undefined, +this.selectedDate)
       .then((res) => {
         this.dataSkirmish = res.map(e => {
-          let obj = {};
+          let obj: { [k: string]: any } = {};
 
           if (e.base) {
             obj = {
@@ -67,13 +67,13 @@ export class SkirmishComponent implements OnInit {
           } else {
             obj = {
               nickname: e.nickname,
-              rating: this.calcRating(e.current.battles,
+              /* rating: this.calcRating(e.current.battles,
                 (e.current.wins / e.current.battles),
                 (e.current.survived_battles / e.current.battles),
                 (e.current.damage_dealt / e.current.battles),
                 e.current.battle_avg_xp,
                 e.current.avg_damage_assisted_radio,
-                e.current.avg_damage_assisted_track).toFixed(3),
+                e.current.avg_damage_assisted_track).toFixed(3), */
               battles: e.current.battles,
               piercing_shot_ratio: (e.current.piercings / e.current.shots).toFixed(3),
               piercing_hits_ratio: (e.current.piercings / e.current.hits).toFixed(3),
@@ -83,9 +83,11 @@ export class SkirmishComponent implements OnInit {
               piercings_piercings_rec_ratio: (e.current.piercings / e.current.piercings_received).toFixed(3),
 
             };
+
+            obj.rating = (((+obj.piercing_shot_ratio + +obj.piercing_hits_ratio + +obj.hits_shots_ratio) / 3.0) * 1000).toFixed(3);
           }
           return obj;
-        });
+        }).filter((e) => e.battles > 0);
       });
   }
 
