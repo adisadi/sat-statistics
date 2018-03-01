@@ -6,7 +6,7 @@ import { NextFunction, RequestHandler } from 'express';
 const router = express.Router();
 
 import { importData } from '../lib/wot-import';
-import { SingleObjectNames, getSingleObject, getPersonalStats, getPlayerTanksStat,getStatDates } from '../lib/wot-get';
+import { SingleObjectNames, getSingleObject, getPersonalStats, getPlayerTanksStat, getStatDates } from '../lib/wot-get';
 
 router.get('/clan', (req, res, next) => {
     let clanInfo = getSingleObject("clan-info");
@@ -18,10 +18,10 @@ router.get('/tanks', (req, res, next) => {
     res.json(tanksData);
 });
 
-router.get('/dates',  (req, res, next) => {
+router.get('/dates', (req, res, next) => {
     let dates = getStatDates();
     res.json(dates);
-}); 
+});
 
 router.get('/clan-rating', (req, res, next) => {
     let stats = getSingleObject("clan-rating");
@@ -29,15 +29,20 @@ router.get('/clan-rating', (req, res, next) => {
 });
 
 router.get('/personal-stats', async (req, res, next) => {
-    let date = req.query.date;
-    let baseDate = req.query.basedate;
-    let stat = req.query.basedate;
+    let date: number = req.query.date;
+    let baseDate: number | undefined = req.query.basedate;
+    let stat: string = req.query.stat;
 
-    if (!stat || date) {
-        next(new Error("Invalid Parameters"));
+    if (!stat) {
+        return next(new Error("Invalid Parameters"));
     }
 
-    let stats: any = getPersonalStats(new Date(date), baseDate ? new Date(baseDate) : null, stat);
+    if (!date) {
+        baseDate = undefined;
+        date = Math.max.apply(null, getStatDates());
+    }
+
+    let stats: any = getPersonalStats(new Date(+date), baseDate ? new Date(+baseDate) : null, stat);
     res.json(stats);
 });
 

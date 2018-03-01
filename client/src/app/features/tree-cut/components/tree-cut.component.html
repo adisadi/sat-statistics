@@ -2,47 +2,6 @@
   <div class="mat-title" style="padding-top:10px;padding-left:10px">
     Top Holzfäller
   </div>
-  <mat-table #table [dataSource]="dataSource" matSort>
+  <app-shared-table [data]="dataSource" [translateFields]="translatedColumns" [defaultSort]="defaultSort" [displayedColumns]="displayedColumns"></app-shared-table>
 
-    <!-- Rank Column -->
-    <ng-container matColumnDef="rank">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Rang </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.rank}} </mat-cell>
-    </ng-container>
-
-    <!-- Name Column -->
-    <ng-container matColumnDef="nickname">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.nickname}} </mat-cell>
-    </ng-container>
-
-    <!-- Battles Column -->
-    <ng-container matColumnDef="battles">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Gefechte </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.battles}} </mat-cell>
-    </ng-container>
-
-    <!-- Holz Column -->
-    <ng-container matColumnDef="trees_cut">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Holz gefällt </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.trees_cut}} </mat-cell>
-    </ng-container>
-
-    <!-- Holz Average Column -->
-    <ng-container matColumnDef="trees_cut_avg">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Holz &#216; </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.trees_cut_avg | number}} </mat-cell>
-    </ng-container>
-
-    <!-- Updated At Column -->
-    <ng-container matColumnDef="updated_at">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Updated At </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.updated_at *1000 | date}} </mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table>
-  <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20, 50, 100]" [showFirstLastButtons]="true">
-  </mat-paginator>
 </div>

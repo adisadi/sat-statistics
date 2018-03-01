@@ -34,11 +34,15 @@ router.get('/clan-rating', (req, res, next) => {
 router.get('/personal-stats', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
     let date = req.query.date;
     let baseDate = req.query.basedate;
-    let stat = req.query.basedate;
-    if (!stat || date) {
-        next(new Error("Invalid Parameters"));
+    let stat = req.query.stat;
+    if (!stat) {
+        return next(new Error("Invalid Parameters"));
     }
-    let stats = wot_get_1.getPersonalStats(new Date(date), baseDate ? new Date(baseDate) : null, stat);
+    if (!date) {
+        baseDate = undefined;
+        date = Math.max.apply(null, wot_get_1.getStatDates());
+    }
+    let stats = wot_get_1.getPersonalStats(new Date(+date), baseDate ? new Date(+baseDate) : null, stat);
     res.json(stats);
 }));
 router.get('/updateStats/:force?', (req, res, next) => __awaiter(this, void 0, void 0, function* () {

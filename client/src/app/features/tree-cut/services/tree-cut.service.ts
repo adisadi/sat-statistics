@@ -10,7 +10,7 @@ export class TreeCutService {
 
 
 
-  private treeCutUrl = '/api/tree-cut';
+  private treeCutUrl = '/api/personal-stats?stat=trees_cut';
 
   constructor(private http: HttpClient) { }
 

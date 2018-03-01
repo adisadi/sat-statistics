@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { MatTableDataSource, MatSort, MatPaginator, MatSortable } from '@angular/material';
 import { TreeCutService } from '../services/tree-cut.service';
 
 @Component({
@@ -9,22 +8,28 @@ import { TreeCutService } from '../services/tree-cut.service';
 })
 export class TreeCutComponent implements OnInit {
 
+  translatedColumns = {
+    nickname: 'Name',
+    battles: 'Gefechte',
+    rank: 'Rang',
+    current: 'Holz gefällt',
+    trees_cut_avg: 'Holz ø'
+  };
 
-  displayedColumns = ['rank','nickname', 'battles', 'trees_cut', 'trees_cut_avg'];
+  displayedColumns = ['rank', 'nickname', 'battles', 'current', 'trees_cut_avg'];
   dataSource = null;
 
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  defaultSort = { column: 'rank', order: 'asc' };
 
   constructor(private treeCutService: TreeCutService) {
     this.treeCutService.getTreeCutStat().then((res) => {
 
-      //Compute Average
+      // Compute Average
       res.forEach(element => {
-        element.trees_cut_avg = element.trees_cut / element.battles;
+        element.trees_cut_avg = (element.current / element.battles).toFixed(3);
       });
 
-      //Compute Rank
+      // Compute Rank
       let i = 1;
       res.sort((a, b) => {
         return b.trees_cut_avg - a.trees_cut_avg;
@@ -32,26 +37,12 @@ export class TreeCutComponent implements OnInit {
         element.rank = i++;
       });
 
-      this.dataSource = new MatTableDataSource(res);
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-
-      this.sort.sort(
-        <MatSortable>{
-          id: 'trees_cut_avg',
-          start: 'desc'
-        }
-      );
+      this.dataSource = res;
     });
   }
 
   ngOnInit() {
   }
-
-  ngAfterViewInit() {
-
-  }
-
 
 }
 

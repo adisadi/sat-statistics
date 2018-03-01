@@ -19,20 +19,20 @@ exports.getSingleObject = getSingleObject;
 function getStatDates() {
     let db = new Database(config.database.file);
     let rows = db.prepare('SELECT DISTINCT date FROM ' + definitons.PersonalStatTable.TableName + ' ORDER BY date').all();
-    return rows.map(d => d.date);
+    return rows.map((d) => d.date);
 }
 exports.getStatDates = getStatDates;
 function getPersonalStats(currentDate, baseDate, stat) {
     let db = new Database(config.database.file);
-    let rows_current = db.prepare('SELECT * FROM ' + definitons.PersonalStatTable.TableName + ' WHERE date=?').all([currentDate]);
+    let rows_current = db.prepare('SELECT * FROM ' + definitons.PersonalStatTable.TableName + ' WHERE date=?').all([+currentDate]);
     let rows_base;
     if (baseDate) {
-        rows_base = db.prepare('SELECT * FROM ' + definitons.PersonalStatTable.TableName + ' WHERE date=?').all([baseDate]);
+        rows_base = db.prepare('SELECT * FROM ' + definitons.PersonalStatTable.TableName + ' WHERE date=?').all([+baseDate]);
     }
     return rows_current.map((r) => {
         let obj = JSON.parse(r.json);
         let baseObj = null;
-        let baseRow = rows_base.find(b => b.account_id === r.account_id);
+        let baseRow = rows_base ? rows_base.find(b => b.account_id === r.account_id) : undefined;
         if (baseRow) {
             baseObj = JSON.parse(baseRow.json);
         }
@@ -43,6 +43,9 @@ function getPersonalStats(currentDate, baseDate, stat) {
             base: baseObj ? baseObj.statistics[stat] : null,
             updated_at: obj.updated_at
         };
+        if (stat === 'trees_cut') {
+            returnValue.battles = obj.statistics.all.battles;
+        }
         return returnValue;
     });
 }

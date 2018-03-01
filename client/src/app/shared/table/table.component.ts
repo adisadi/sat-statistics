@@ -21,7 +21,7 @@ export class TableComponent implements OnInit {
   translateFields: any;
 
   @Input()
-  defaultSort: { column: string, order: "asc" | "desc" } = undefined;
+  defaultSort: { column: string, order: 'asc' | 'desc' } = undefined;
 
   @Input()
   displayedColumns: string[];
@@ -42,7 +42,7 @@ export class TableComponent implements OnInit {
   }
 
   setData() {
-    if (!this._data) return;
+    if (!this._data) { return; }
 
     this.allColumns = Object.keys(this.data[0]);
 
