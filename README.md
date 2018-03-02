@@ -1,1 +1,1 @@
-# sat-statistics
+# wot-clan-statistics
