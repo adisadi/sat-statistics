@@ -45,6 +45,7 @@ function generate(database, singleObjects, personalStats, playerTanksStats) {
     createSingleObjectsTable(db, singleObjects);
     createPersonalStatsTable(db, personalStats);
     createPlayerTanksStatsTable(db, playerTanksStats);
+    db.close();
 }
 exports.generate = generate;
 //# sourceMappingURL=database.js.map

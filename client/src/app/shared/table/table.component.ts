@@ -18,6 +18,9 @@ export class TableComponent implements OnInit {
   get data(): any[] { return this._data; }
 
   @Input()
+  showColumnSelector: boolean = true;
+
+  @Input()
   translateFields: any;
 
   @Input()
@@ -57,6 +60,10 @@ export class TableComponent implements OnInit {
         }
       );
     }
+  }
+
+  isDate(d: any): boolean {
+    return (d instanceof Date);
   }
 
 }

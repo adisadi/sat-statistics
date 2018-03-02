@@ -15,6 +15,7 @@ import {TreeCutModule} from './features/tree-cut/tree-cut.module';
 import {SkirmishModule} from './features/skirmish/skirmish.module';
 import {ClanInfoModule} from './features/clan-info/clan-info.module';
 import {PersonalStatsModule} from './features/personal-stats/personal-stats.module';
+import { BattleLogModule } from './features/battle-log/battle-log.module';
 
 
 
@@ -32,7 +33,8 @@ import {PersonalStatsModule} from './features/personal-stats/personal-stats.modu
     TreeCutModule,
     SkirmishModule,
     ClanInfoModule,
-    PersonalStatsModule
+    PersonalStatsModule,
+    BattleLogModule
   ],
   providers: [DataService],
   bootstrap: [AppComponent]

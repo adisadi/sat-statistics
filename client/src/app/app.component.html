@@ -4,10 +4,11 @@
     <b>{{title}}</b>
   </span>
   <span style="padding-left:10px">Clan Statistics</span>
+  <span style="padding-left:10px; font-size: 10px ">Letztes Update: {{update_date | date:'medium'}}</span>
   <span style="flex: 1 1 auto"></span>
   <a href="https://github.com/adisadi/wot-clan-statistics" mat-button target="_new">
     <img src="./assets/github-circle-white-transparent.svg" />
-  </a> 
+  </a>
   <button mat-icon-button [matMenuTriggerFor]="menu">
     <mat-icon>more_vert</mat-icon>
   </button>
@@ -16,6 +17,12 @@
       <button mat-menu-item>
         <mat-icon>blur_on</mat-icon>
         <span>Info</span>
+      </button>
+    </a>
+    <a style="text-decoration: none;" routerLink="/battle-log">
+      <button mat-menu-item>
+        <mat-icon>blur_on</mat-icon>
+        <span>Gefechts Log</span>
       </button>
     </a>
     <a style="text-decoration: none;" routerLink="/holz">
@@ -33,7 +40,7 @@
     <a style="text-decoration: none;" routerLink="/personal-stats">
       <button mat-menu-item>
         <mat-icon>blur_on</mat-icon>
-        <span>Stats</span>
+        <span>Personal Stats</span>
       </button>
     </a>
   </mat-menu>

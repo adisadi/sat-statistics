@@ -13,6 +13,13 @@ router.get('/clan', (req, res, next) => {
     res.json(clanInfo);
 });
 
+router.get('/update-date', (req, res, next) => {
+    let executionTime = getSingleObject("execution-time");
+    res.json(+new Date(executionTime));
+});
+
+
+
 router.get('/tanks', (req, res, next) => {
     let tanksData = getSingleObject("tanks");
     res.json(tanksData);

@@ -13,12 +13,14 @@ const definitons = __importStar(require("./database/table-definitions"));
 function getSingleObject(name) {
     let db = new Database(config.database.file);
     let row = db.prepare('SELECT * FROM ' + definitons.SingleObjectTable.TableName + ' WHERE name=?').get(name);
+    db.close();
     return JSON.parse(row.json);
 }
 exports.getSingleObject = getSingleObject;
 function getStatDates() {
     let db = new Database(config.database.file);
     let rows = db.prepare('SELECT DISTINCT date FROM ' + definitons.PersonalStatTable.TableName + ' ORDER BY date').all();
+    db.close();
     return rows.map((d) => d.date);
 }
 exports.getStatDates = getStatDates;
@@ -29,6 +31,7 @@ function getPersonalStats(currentDate, baseDate, stat) {
     if (baseDate) {
         rows_base = db.prepare('SELECT * FROM ' + definitons.PersonalStatTable.TableName + ' WHERE date=?').all([+baseDate]);
     }
+    db.close();
     return rows_current.map((r) => {
         let obj = JSON.parse(r.json);
         let baseObj = null;
@@ -39,6 +42,8 @@ function getPersonalStats(currentDate, baseDate, stat) {
         let returnValue = {
             account_id: r.account_id,
             nickname: obj.nickname,
+            last_battle_time: obj.last_battle_time,
+            global_rating: obj.global_rating,
             current: obj.statistics[stat],
             base: baseObj ? baseObj.statistics[stat] : null,
             updated_at: obj.updated_at
@@ -57,6 +62,7 @@ function getPlayerTanksStat(currentDate, baseDate, stat, tank_id) {
     if (baseDate) {
         rows_base = db.prepare('SELECT * FROM ' + definitons.PlayerTankStatTable.TableName + ' WHERE date=? AND tank_id=?').all([baseDate, tank_id]);
     }
+    db.close();
     return rows_current.map((r) => {
         let obj = JSON.parse(r.json);
         let baseObj = null;

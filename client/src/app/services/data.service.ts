@@ -9,8 +9,10 @@ import { catchError, map, tap } from 'rxjs/operators';
 export class DataService {
 
   private _clanData: any;
+  private _updateDate:Date;
 
   private clanInfoUrl = '/api/clan';
+  private updateDateUrl = '/api/update-date';
 
   constructor(private http: HttpClient) { }
 
@@ -25,6 +27,20 @@ export class DataService {
     }
     return this._clanData;
   }
+
+  async getUpdateDate(): Promise<Date> {
+    if (!this._updateDate) {
+      this._updateDate = await this.http.get<any>(this.updateDateUrl)
+        .pipe(
+          tap(heroes => this.log(`fetched update-date`)),
+          catchError(this.handleError('getUpdateDate', []))
+        ).map(res=> new Date(res))
+        .toPromise();
+    }
+    return this._updateDate;
+  }
+
+
 
   /**
    * Handle Http operation that failed.

@@ -7,38 +7,26 @@ import { catchError, map, tap } from 'rxjs/operators';
 import 'rxjs/add/operator/map';
 
 @Injectable()
-export class PersonalStatsService {
+export class BattleLogService {
+
+  private _clanData: any;
+
 
   private personalStatUrl = '/api/personal-stats';
-  private datesUrl = '/api/dates';
 
   constructor(private http: HttpClient) { }
 
-  async getPersonalStat(stat: string, baseLineDate: number | undefined, currentDate: number): Promise<any> {
+  async getPersonalStat(): Promise<any> {
 
     let params = new HttpParams();
-    params = params.append('date', currentDate.toString());
-    params = params.append('stat', stat);
-    if (baseLineDate) {
-      params = params.append('basedate', baseLineDate.toString());
-    }
 
+    params = params.append('stat', 'all');
+   
     return await this.http.get<any>(this.personalStatUrl, { params: params })
       .pipe(
         tap(heroes => this.log(`fetched skirmish`)),
         catchError(this.handleError('getSkirmishStat', []))
       ).toPromise();
-  }
-
-  async getDates(): Promise<Date[]> {
-    return await this.http.get<any>(this.datesUrl)
-      .pipe(
-        tap(heroes => this.log(`fetched dates`)),
-        catchError(this.handleError('getDates', []))
-      )
-      .map((res) => {
-        return res.map((e) => new Date(e)).sort((a, b) => a - b);
-      }).toPromise();
   }
 
 

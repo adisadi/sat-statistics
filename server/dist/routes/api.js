@@ -19,6 +19,10 @@ router.get('/clan', (req, res, next) => {
     let clanInfo = wot_get_1.getSingleObject("clan-info");
     res.json(clanInfo);
 });
+router.get('/update-date', (req, res, next) => {
+    let executionTime = wot_get_1.getSingleObject("execution-time");
+    res.json(+new Date(executionTime));
+});
 router.get('/tanks', (req, res, next) => {
     let tanksData = wot_get_1.getSingleObject("tanks");
     res.json(tanksData);

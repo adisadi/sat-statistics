@@ -33,6 +33,7 @@ function genericCreateTableAndInserts(db: any, def: defintions.ITableDefinition,
     }
 
     db.prepare("COMMIT").run();
+  
 }
 
 
@@ -53,5 +54,6 @@ export function generate(database: string, singleObjects:any[],  personalStats:a
     createSingleObjectsTable(db,singleObjects);
     createPersonalStatsTable(db,personalStats);
     createPlayerTanksStatsTable(db,playerTanksStats);
+    db.close();
 }
 

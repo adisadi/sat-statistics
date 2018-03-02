@@ -13,6 +13,7 @@ export class ClanInfoComponent implements OnInit {
   clanInfo: any;
   clanRatings: any;
 
+
   tranlatedNames = {
     battles_count_avg: 'Durchschnitt Gefechte',
     battles_count_avg_daily: 'Durchschnitt Gefechte pro Tag',
@@ -27,6 +28,8 @@ export class ClanInfoComponent implements OnInit {
     wins_ratio_avg: 'Durchschnitt Siegrate',
     global_rating_avg: 'Durchschnitt Globales Rating'
   };
+
+ 
 
   constructor(private dataService: DataService, private clanInfoService: ClanInfoService) {
     this.dataService.getClanInfo()
@@ -50,6 +53,8 @@ export class ClanInfoComponent implements OnInit {
       this.clanRatings = temp.sort((a, b) => {
         return a.name.localeCompare(b.name);
       });
+
+     
     });
   }
 

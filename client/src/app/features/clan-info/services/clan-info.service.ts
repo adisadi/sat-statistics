@@ -12,7 +12,7 @@ export class ClanInfoService {
   private _clanData: any;
 
   private clanRatingUrl = '/api/clan-rating';
-
+  private personalStatUrl = '/api/personal-stats';
 
   constructor(private http: HttpClient) { }
 
@@ -27,6 +27,19 @@ export class ClanInfoService {
 
     return this._clanData;
 
+  }
+
+  async getPersonalStat(): Promise<any> {
+
+    let params = new HttpParams();
+
+    params = params.append('stat', 'all');
+   
+    return await this.http.get<any>(this.personalStatUrl, { params: params })
+      .pipe(
+        tap(heroes => this.log(`fetched skirmish`)),
+        catchError(this.handleError('getSkirmishStat', []))
+      ).toPromise();
   }
 
 
