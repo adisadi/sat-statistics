@@ -35,7 +35,7 @@ export class TableComponent implements OnInit {
   }
 
   setData() {
-    if (!this._data) return;
+    if (!this._data || this._data.length === 0) return;
 
     this.displayedColumns = Object.keys(this.data[0]);
     this.dataSource = new MatTableDataSource(this._data);

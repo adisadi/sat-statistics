@@ -47,21 +47,21 @@ export class SkirmishComponent implements OnInit {
   loadSkirmishData() {
     this.skirmishService.getSkirmishStat(this.selectedBaseline ? +this.selectedBaseline : undefined, +this.selectedDate)
       .then((res) => {
-        this.dataSkirmish = res.map(e => {
+        let result = res.map(e => {
           let obj: { [k: string]: any } = {};
 
           if (e.base) {
             obj = {
               nickname: e.nickname,
-              battles: e.base.battles - e.current.battles,
-              piercing_shot_ratio: ((e.base.piercings - e.current.piercings) / (e.base.shots - e.current.shots)).toFixed(3),
-              piercing_hits_ratio: ((e.base.piercings - e.current.piercings) / (e.base.hits - e.current.hits)).toFixed(3),
-              hits_shots_ratio: ((e.base.hits - e.current.hits) / (e.base.shots - e.current.shots)).toFixed(3),
-              wins_looses_ratio: ((e.base.wins - e.current.wins) / (e.base.losses - e.current.losses)).toFixed(3),
-              wins_battles_ratio: ((e.base.wins - e.current.wins) / (e.base.battles - e.current.battles)).toFixed(3),
+              battles: e.current.battles - e.base.battles,
+              piercing_shot_ratio: ((e.current.piercings - e.base.piercings) / (e.current.shots - e.base.shots)).toFixed(3),
+              piercing_hits_ratio: ((e.current.piercings - e.base.piercings) / (e.current.hits - e.base.hits)).toFixed(3),
+              hits_shots_ratio: ((e.current.hits - e.base.hits) / (e.current.shots - e.base.shots)).toFixed(3),
+              wins_looses_ratio: ((e.current.wins - e.base.wins) / (e.current.losses - e.base.losses)).toFixed(3),
+              wins_battles_ratio: ((e.current.wins - e.base.wins) / (e.current.battles - e.base.battles)).toFixed(3),
               piercings_piercings_rec_ratio:
-                ((e.base.piercings - e.current.piercings) /
-                  (e.base.piercings_received - e.current.piercings_received)).toFixed(3),
+                ((e.current.piercings - e.base.piercings) /
+                  (e.current.piercings_received - e.base.piercings_received)).toFixed(3),
 
             };
           } else {
@@ -83,11 +83,17 @@ export class SkirmishComponent implements OnInit {
               piercings_piercings_rec_ratio: (e.current.piercings / e.current.piercings_received).toFixed(3),
 
             };
-
-            obj.rating = (((+obj.piercing_shot_ratio + +obj.piercing_hits_ratio + +obj.hits_shots_ratio) / 3.0) * 1000).toFixed(3);
           }
+
+          obj.rating = (((+obj.piercing_shot_ratio + +obj.piercing_hits_ratio + +obj.hits_shots_ratio) / 3.0) * 1000).toFixed(3);
           return obj;
-        }).filter((e) => e.battles > 0);
+        }).filter((o) => !isNaN(o.rating));
+        if (result) {
+          this.dataSkirmish = result;
+        }
+        else {
+          this.dataSkirmish = [];
+        }
       });
   }
 

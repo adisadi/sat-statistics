@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule,LOCALE_ID } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import {FlexLayoutModule} from '@angular/flex-layout';
@@ -18,6 +18,9 @@ import {PersonalStatsModule} from './features/personal-stats/personal-stats.modu
 import { BattleLogModule } from './features/battle-log/battle-log.module';
 
 
+import localedeCH from '@angular/common/locales/de-CH';
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localedeCH);
 
 @NgModule({
   declarations: [
@@ -36,7 +39,7 @@ import { BattleLogModule } from './features/battle-log/battle-log.module';
     PersonalStatsModule,
     BattleLogModule
   ],
-  providers: [DataService],
+  providers: [DataService,{ provide: LOCALE_ID, useValue: "de-CH" }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
